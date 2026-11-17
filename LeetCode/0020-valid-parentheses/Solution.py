@@ -1,28 +1,14 @@
 class Solution:
     def isValid(self, s: str) -> bool:
         stack = []
-        left_brackets = {'(','[','{'}
-        right_brackets = {')',']','}'}
+        closeToOpen = {')':'(', ']':'[', '}':'{'}
 
-        if s[0] in right_brackets:
-            return False
-        stack.append(s[0])
-
-        for ii in range(1,len(s)):
-            if s[ii] in left_brackets:
-                stack.append(s[ii])
+        for char in s:
+            if char in closeToOpen: # char in keys
+                if not stack or stack.pop()!= closeToOpen[char]:
+                    # return False if stack is empty or pair not matching
+                    return False
             else:
-                if not stack:
-                    return False
-                left = stack.pop()
-                if not (
-                    (left == '(' and s[ii] == ')') 
-                    or (left == '[' and s[ii] == ']') 
-                    or (left == '{' and s[ii] == '}')
-                ):
-                    return False
+                stack.append(char)
         
-        if stack:
-            return False
-
-        return True
+        return not stack
